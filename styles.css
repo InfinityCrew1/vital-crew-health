@@ -31,10 +31,10 @@ body {
   background: var(--bg); color: var(--ink);
   font: 16px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
 }
-.app { display: flex; min-height: 100vh; }
+.app { display: flex; min-height: 100vh; min-height: 100dvh; }
 
 aside {
-  width: 240px; height: 100vh; position: sticky; top: 0;
+  width: 240px; height: 100vh; height: 100dvh; position: sticky; top: 0;
   padding: calc(24px + env(safe-area-inset-top, 0px)) 14px 20px;
   background: var(--card); border-right: 1px solid var(--line);
 }
@@ -146,10 +146,10 @@ input[type=checkbox] { width: 22px; height: 22px; }
 /* ---------- 5. Popups, toast, chat, report ---------- */
 .ovl { position: fixed; inset: 0; background: rgba(0, 0, 0, .5); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
 .sheet {
-  background: var(--card); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+  background: var(--card); width: 100%; max-width: 520px; max-height: 90vh; max-height: 90dvh; overflow-y: auto;
   border-radius: 26px 26px 0 0; padding: 22px 18px calc(24px + env(safe-area-inset-bottom, 0px));
 }
-@media (min-width: 761px) { .ovl { align-items: center; } .sheet { border-radius: 26px; } }
+@media (min-width: 901px) { .ovl { align-items: center; } .sheet { border-radius: 26px; } }
 .toast {
   position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
   background: var(--ink); color: var(--bg); padding: 11px 20px; border-radius: 99px; font-weight: 600; font-size: 14px; z-index: 30;
@@ -173,7 +173,7 @@ input[type=checkbox] { width: 22px; height: 22px; }
 
 /* ---------- 6. Phone: bottom tab bar ---------- */
 nav.tab { display: none; }
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   aside { display: none; }
   main { padding: calc(10px + env(safe-area-inset-top, 0px)) 14px calc(86px + env(safe-area-inset-bottom, 0px)); }
   h1 { font-size: 28px; }
@@ -302,3 +302,72 @@ aside { display: flex; flex-direction: column; }
 #side::-webkit-scrollbar-thumb { background: var(--mute); border-radius: 6px; }
 #side::-webkit-scrollbar-track { background: transparent; }
 .nb:focus-visible { outline: 3px solid #3b82f6; outline-offset: -2px; }
+
+/* ---------- 11. Responsive: all devices ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, svg, video { max-width: 100%; }
+body { overflow-wrap: anywhere; overflow-x: hidden; }
+input, select, textarea { font-size: 16px; }          /* stops iOS zoom on focus */
+.btn, .chip, .nb, .opt, .th, .qa button { min-height: 44px; }   /* touch targets */
+
+/* Large tablet / small laptop: slimmer sidebar */
+@media (min-width: 901px) and (max-width: 1100px) {
+  aside { width: 200px; padding-left: 10px; padding-right: 10px; }
+  main { padding-left: 20px; padding-right: 20px; }
+}
+/* Desktop: use the extra width */
+@media (min-width: 1101px) { main { max-width: 900px; padding-left: 28px; padding-right: 28px; } .grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); } }
+@media (min-width: 1500px) { main { max-width: 1040px; } aside { width: 260px; } body { font-size: 17px; } }
+@media (min-width: 2000px) { main { max-width: 1240px; } body { font-size: 18px; } }
+
+/* Tablet portrait: bottom bar, but give content more room */
+@media (min-width: 601px) and (max-width: 900px) {
+  main { max-width: 720px; padding-left: 24px; padding-right: 24px; }
+  nav.tab button { font-size: 12px; }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  h1 { font-size: 24px; }
+  h2 { font-size: 17px; }
+  .card { padding: 14px; border-radius: 18px; }
+  .hero { gap: 14px; }
+  .big { font-size: 26px; }
+  .bigcount { font-size: 52px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tools { flex-wrap: wrap; }
+  .tools .btn { flex: 1 1 140px; }
+  .msg { max-width: 94%; }
+  .body-fig { flex: 1 1 100%; max-width: 240px; margin: 0 auto; }
+  .li { flex-wrap: wrap; }
+  #rep { padding: 16px; }
+  .toast { max-width: calc(100vw - 32px); text-align: center; }
+}
+/* Small phones (iPhone SE, Galaxy Fold, etc.) */
+@media (max-width: 400px) {
+  main { padding-left: 10px; padding-right: 10px; }
+  .grid { grid-template-columns: 1fr; }
+  h1 { font-size: 22px; }
+  .qa { gap: 6px; } .qa button { font-size: 11px; padding: 10px 2px; }
+  .av b { width: 54px; height: 54px; font-size: 20px; }
+  .breath { width: 120px; height: 120px; }
+  .moods button { font-size: 22px; }
+  nav.tab button { font-size: 10px; }
+  nav.tab .i { font-size: 19px; }
+  .sheet { padding-left: 14px; padding-right: 14px; }
+}
+@media (max-width: 340px) { nav.tab button { font-size: 9px; } .bigcount { font-size: 44px; } }
+
+/* Landscape phones: short viewport */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sheet { max-height: 96vh; max-height: 96dvh; }
+  .chat { min-height: 60vh; }
+  .breath { margin: 14px auto; width: 100px; height: 100px; }
+  nav.tab { padding-top: 2px; } nav.tab .i { font-size: 17px; }
+  main { padding-left: calc(14px + env(safe-area-inset-left, 0px)); padding-right: calc(14px + env(safe-area-inset-right, 0px)); }
+}
+/* Touch devices: no sticky hover lift */
+@media (hover: none) { .card:hover, .moods button:hover { transform: none; } }
+
+/* Hide sidebar on phones/tablets (must come after the later `aside { display: flex }` rule) */
+@media (max-width: 900px) { aside { display: none; } }
