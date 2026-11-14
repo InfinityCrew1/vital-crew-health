@@ -1,4 +1,4 @@
-/* Built with AI assistance: parts of this code were written with Claude (Anthropic) and reviewed by the team. Disclosed per NASA Space Apps rules. */
+/* Designed and built by the VITAL team. AI tools (Claude) were used to assist with coding, as disclosed under NASA Space Apps rules. */
 /* ==========================================================
    VITAL — extras (loads before app.js; only uses app globals when called)
    Assistant picker · breathing coach · mood tap · expandable cards
