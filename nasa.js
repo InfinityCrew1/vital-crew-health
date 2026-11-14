@@ -1,4 +1,4 @@
-/* Built with AI assistance: parts of this code were written with Claude (Anthropic) and reviewed by the team. Disclosed per NASA Space Apps rules. */
+/* Designed and built by the VITAL team. AI tools (Claude) were used to assist with coding, as disclosed under NASA Space Apps rules. */
 /* ==========================================================
    VITAL — live data layer (loads before app.js)
    NASA DONKI (flares, SEP, geomagnetic storms) · NASA Image Library
