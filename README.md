@@ -51,4 +51,7 @@ Decision support, not diagnosis. Thresholds need flight-surgeon validation befor
 MIT licensed.
 
 ## AI assistance and NASA media rules
-Parts of the code were written with AI assistance (Claude, Anthropic) and reviewed by the team; no AI-generated images, video or audio are used. The NASA Image Library feed hides image `KSC-98pc481`, logo/insignia images and images that mention children or students (see `BLOCKED_NASA_IDS` and `BLOCKED_WORDS` in `nasa.js`).
+VITAL was designed and built by the team; AI tools (Claude) were used to assist with coding. No AI-generated images, video or audio are used. The NASA Image Library feed hides image `KSC-98pc481`, logo/insignia images and images that mention children or students (see `BLOCKED_NASA_IDS` and `BLOCKED_WORDS` in `nasa.js`).
+
+## Welcome-screen Earth photo
+Drop a photo named `earth.jpg` next to `index.html` (for example NASA's public-domain "Blue Marble", ideally 1600 px wide or more, under 500 KB) and it becomes the background of the welcome screen. Without it, the app draws its own rotating globe. Credit NASA in the README if you use one, and avoid images that contain NASA logos.

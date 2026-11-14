@@ -439,10 +439,40 @@ function createTeam() {
   enterTeam(n, { crew: {}, logs: {}, care: {} });
 }
 const joinTeam = i => enterTeam(Object.keys(getTeams())[i]);
+
+/* Space-themed welcome hero: animated globe, orbiting satellite, starfield (pure CSS/SVG, works offline) */
+function spaceHero() {
+  return `<div id="globeBg" aria-hidden="true"><div class="photo"></div><div class="stars"></div><div class="stars s2"></div>
+      <div class="veil"></div></div>
+    <section class="space" id="space" aria-label="Welcome">
+    <div class="horizon" aria-hidden="true"><div class="hphoto"></div><canvas id="globe" class="globe-cv" width="640" height="640"></canvas></div>
+    <h1>VITAL</h1>
+    <p class="tagline">Crew health companion for long-duration missions</p>
+    <p class="tagline s">Choose how to start below.</p>
+  </section>`;
+}
+
+/* Three info cards on the welcome screen; each button takes the user straight into "Add crew member" */
+const INFO_CARDS = [
+  ['🧬', 'Know every baseline', 'VITAL compares each astronaut with their own normal, not a population average, across five health domains. Small drifts show up days before they become problems.'],
+  ['🛰️', 'Built for the mission', 'Works offline, so it keeps going during comms gaps. Live NASA space-weather and image feeds are added when a connection is available, and all data stays on your device.'],
+  ['🩺', 'Guidance, not guesswork', 'A clickable body map, step-by-step measuring guides, NASA’s five human-research hazards and a daily health mission, all in plain language for non-experts.']
+];
+function infoCards() {
+  return `<div class="infos">${INFO_CARDS.map(([i, t, d]) => `<article class="card info"><div class="ic" aria-hidden="true">${i}</div>
+      <h2>${t}</h2><p>${d}</p><button class="btn" onclick="startAddCrew()">Add your crew →</button></article>`).join('')}</div>`;
+}
+function startAddCrew() {
+  try { sessionStorage.setItem('vital_open_add', '1'); } catch (e) { /* ignore */ }
+  if (TEAM) { sessionStorage.removeItem('vital_open_add'); return addProfileSheet(); }
+  const saved = Object.keys(getTeams());
+  enterTeam(saved[0] || 'My Crew');             // reloads; the sheet opens on boot
+}
 function renderLogin() {
   ['top', 'who', 'side', 'tab'].forEach(i => { byId(i).innerHTML = ''; });
   const saved = Object.keys(getTeams());
-  byId('view').innerHTML = `<h1>Welcome to VITAL</h1><div class="mute">Crew health companion for long-duration missions. Choose how to start.</div>
+  byId('view').innerHTML = `${spaceHero()}
+    ${infoCards()}
     <div class="card hero" style="display:block"><h2 style="margin:0 0 6px">🚀 NASA Crew-13 demo team</h2>
       <div class="mute">The four real members of NASA’s SpaceX Crew-13 (Jessica Watkins, Luke Delaney, Joshua Kutryk, Sergey Teteryatnikov), launched 1 Oct 2026. Real names, roles and mission; health readings are simulated because NASA does not publish astronauts’ medical data.</div>
       <button class="btn s" id="nasa-demo" onclick="enterTeam(NASA_TEAM_NAME,{crew:JSON.parse(JSON.stringify(NASA_TEAM)),logs:{},care:{}})">Open NASA Crew-13 demo</button></div>
@@ -450,6 +480,11 @@ function renderLogin() {
       <button class="btn" onclick="createTeam()">Create team</button><div class="mute" style="margin-top:8px">Then add your crew members with their own baselines.</div></div>
     <div class="card"><h2 style="margin:0 0 6px">Your saved teams</h2>${saved.length ? saved.map((t, i) => `<button class="opt" onclick="joinTeam(${i})"><b>${esc(t)}</b></button>`).join('') : '<div class="mute">No saved teams yet.</div>'}
       <div class="mute" style="margin-top:8px">Teams are stored privately on this device. Use Crew → Download backup to move a team to another device.</div></div>`;
+  document.body.classList.add('login');
+  const hero = document.body, probe = new Image();       // real photo if earth.jpg exists, else the drawn globe
+  probe.onload = () => hero && hero.classList.add('has-photo');
+  probe.onerror = () => window.startGlobe && startGlobe();
+  probe.src = 'earth.jpg';
 }
 
 /* ---------- 6d. NASA's five hazards, interpreted from each astronaut's data ---------- */
@@ -1228,4 +1263,5 @@ function pitchView() {
 
 applyTheme();
 render();
+try { if (TEAM && sessionStorage.getItem('vital_open_add')) { sessionStorage.removeItem('vital_open_add'); addProfileSheet(); } } catch (e) { /* ignore */ }
 loadLive();   // pull live NASA / space-weather data in the background
